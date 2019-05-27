@@ -19,7 +19,7 @@ public class PersonClient {
 
 
         Mono<Person> personMono = client.get()
-                .uri("/persons/{id}", "5ce88569c311de26d9af0cdb")
+                .uri("/api/persons/{id}", "5ce88569c311de26d9af0cdb")
                 .retrieve()
                 .bodyToMono(Person.class);
 

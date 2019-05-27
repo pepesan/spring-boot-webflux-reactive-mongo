@@ -9,5 +9,4 @@ public class SpringBootWebfluxReactiveMongoApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringBootWebfluxReactiveMongoApplication.class, args);
     }
-
 }
