@@ -20,6 +20,8 @@ import java.util.Collections;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SpringBootWebfluxReactiveMongoApplicationTests {
 
+    private static final String BASE_URL = "/api/persons";
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -36,7 +38,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
     @Test
     public void testObtenerListaPersonas() {
         byte[] resultado = webClient
-                .get().uri("/api/persons")
+                .get().uri(BASE_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -49,7 +51,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
         Person person = new Person();
         person.setName("Pepe");
 
-        webClient.post().uri("/api/persons")
+        webClient.post().uri(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(person), Person.class)
@@ -67,7 +69,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
         person=personRepository.save(person).block();
 
         webClient.get()
-                .uri("/api/persons/{id}", Collections.singletonMap("id", person.getId()))
+                .uri(BASE_URL+"/{id}", Collections.singletonMap("id", person.getId()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -87,7 +89,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
         person=personRepository.save(person).block();
 
         webClient.delete()
-                .uri("/api/persons/{id}", Collections.singletonMap("id", person.getId()))
+                .uri(BASE_URL+"/{id}", Collections.singletonMap("id", person.getId()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -105,7 +107,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
     }
 
     @Test
-    public void testUpdateTweet() {
+    public void testUpdatePerson() {
         Person person= new Person();
         person.setName("Pepe");
         person=personRepository.save(person).block();
@@ -114,7 +116,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
         person2.setName("Pepe2");
 
         webClient.put()
-                .uri("/api/persons/{id}", Collections.singletonMap("id", person.getId()))
+                .uri(BASE_URL+"/{id}", Collections.singletonMap("id", person.getId()))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(person2), Person.class)
