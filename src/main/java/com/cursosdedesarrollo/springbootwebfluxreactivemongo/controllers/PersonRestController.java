@@ -35,7 +35,7 @@ public class PersonRestController {
     @PostMapping
     private Mono<ResponseEntity<Person>> addPerson(@Valid @RequestBody Person person) {
         return personRepository.save(person)
-                .map(addedPerson -> ResponseEntity.ok(addedPerson))
+                .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
     @GetMapping("/{id}")

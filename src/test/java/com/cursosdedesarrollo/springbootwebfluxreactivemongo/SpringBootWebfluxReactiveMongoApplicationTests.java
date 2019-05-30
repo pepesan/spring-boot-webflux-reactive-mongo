@@ -1,20 +1,27 @@
 package com.cursosdedesarrollo.springbootwebfluxreactivemongo;
 
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain.Person;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.repositories.PersonRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.reactive.server.WebTestClientConfigurer;
+import reactor.core.publisher.Mono;
 
-import java.time.Duration;
+import java.util.Collections;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SpringBootWebfluxReactiveMongoApplicationTests {
+
+    @Autowired
+    private PersonRepository personRepository;
 
     private WebTestClient webClient;
     @Before
@@ -35,5 +42,87 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
                 .expectStatus().isOk()
                 .expectBody().returnResult().getResponseBody();
         System.out.format("%s: %s%n", "La lista de personas:",  new String(resultado));
+    }
+
+    @Test
+    public void testCreatePerson() {
+        Person person = new Person();
+        person.setName("Pepe");
+
+        webClient.post().uri("/api/persons")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(person), Person.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.name").isEqualTo("Pepe");
+    }
+    @Test
+    public void testGetSinglePerson() {
+        Person person= new Person();
+        person.setName("Pepe");
+        person=personRepository.save(person).block();
+
+        webClient.get()
+                .uri("/api/persons/{id}", Collections.singletonMap("id", person.getId()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.id").isEqualTo(person.getId())
+                .jsonPath("$.name").isEqualTo("Pepe")
+                .consumeWith(response ->{
+                            Assertions.assertThat(response.getResponseBody()).isNotNull();
+                        }
+                        );
+        personRepository.delete(person);
+    }
+    @Test
+    public void testDeleteSinglePerson() {
+        Person person= new Person();
+        person.setName("Pepe");
+        person=personRepository.save(person).block();
+
+        webClient.delete()
+                .uri("/api/persons/{id}", Collections.singletonMap("id", person.getId()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.id").isEqualTo(person.getId())
+                .jsonPath("$.name").isEqualTo("Pepe")
+                .consumeWith(response ->{
+                            Assertions.assertThat(response.getResponseBody()).isNotNull();
+                        }
+                );
+        Mono<Person>monoPerson=personRepository.findById(person.getId());
+        monoPerson.subscribe(persona ->{
+            Assertions.assertThat(persona).isNull();
+        });
+    }
+
+    @Test
+    public void testUpdateTweet() {
+        Person person= new Person();
+        person.setName("Pepe");
+        person=personRepository.save(person).block();
+
+        Person person2= new Person();
+        person2.setName("Pepe2");
+
+        webClient.put()
+                .uri("/api/persons/{id}", Collections.singletonMap("id", person.getId()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(person2), Person.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Pepe2");
+        personRepository.deleteById(person.getId());
     }
 }
