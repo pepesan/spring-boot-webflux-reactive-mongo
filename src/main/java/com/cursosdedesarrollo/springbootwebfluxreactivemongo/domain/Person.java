@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "persons")
+@Document(collection = "personas")
 public class Person {
     private String id;
     @NotNull

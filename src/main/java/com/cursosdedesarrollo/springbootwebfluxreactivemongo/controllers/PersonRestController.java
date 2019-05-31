@@ -3,14 +3,15 @@ package com.cursosdedesarrollo.springbootwebfluxreactivemongo.controllers;
 import com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain.Person;
 import com.cursosdedesarrollo.springbootwebfluxreactivemongo.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/persons")
@@ -24,12 +25,13 @@ public class PersonRestController {
     private Flux<Person> getAllPersons() {
         return personRepository.findAll();
     //private Flux<ResponseEntity<Person>> getAllPersons() {
-
-        /*
+    /*
         return personRepository.findAll()
-                .map(persons -> ResponseEntity.ok(persons))
+                .map(ResponseEntity::ok)
+                //.map(persons -> ResponseEntity.ok(persons))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
-        */
+
+     */
     }
 
     @PostMapping
@@ -80,4 +82,19 @@ public class PersonRestController {
     }
 
 
+    private static final String API_MIME_TYPE = "application/json";
+    private static final String API_BASE_URL = "http://localhost:8080";
+    private static final String USER_AGENT = "Spring 5 WebClient";
+    @GetMapping("/client")
+    public Flux<Person> clienteListado(){
+        WebClient webClient = WebClient.builder()
+                .baseUrl(API_BASE_URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, API_MIME_TYPE)
+                .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
+                .build();
+        return webClient.get()
+                .uri("/api/persons")
+                .exchange()
+                .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Person.class));
+    }
 }
