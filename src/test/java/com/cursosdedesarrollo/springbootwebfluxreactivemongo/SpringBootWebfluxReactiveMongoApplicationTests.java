@@ -19,6 +19,7 @@ import java.util.Collections;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SpringBootWebfluxReactiveMongoApplicationTests {
+    private static final String SERVER_BASE_URL= "http://localhost:8080";
 
     private static final String BASE_URL = "/api/persons";
 
@@ -30,7 +31,7 @@ public class SpringBootWebfluxReactiveMongoApplicationTests {
     public void setUp() {
         this.webClient= WebTestClient
                 .bindToServer()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(SERVER_BASE_URL)
                 .build();
     }
 
