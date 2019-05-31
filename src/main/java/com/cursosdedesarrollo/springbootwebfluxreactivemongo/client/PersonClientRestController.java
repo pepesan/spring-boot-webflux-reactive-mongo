@@ -17,7 +17,7 @@ public class PersonClientRestController {
     private static final String API_MIME_TYPE = "application/json";
     private static final String API_BASE_URL = "http://localhost:8080";
     private static final String USER_AGENT = "Spring 5 WebClient";
-    @GetMapping("/client")
+    @GetMapping
     public Flux<Person> clienteListado(){
         WebClient webClient = WebClient.builder()
                 .baseUrl(API_BASE_URL)
@@ -29,7 +29,7 @@ public class PersonClientRestController {
                 .exchange()
                 .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Person.class));
     }
-    @GetMapping("/client/{id}")
+    @GetMapping("/{id}")
     public Mono<ResponseEntity<Person>> clienteBorrado(@PathVariable(value = "id") String id){
         WebClient webClient = WebClient.builder()
                 .baseUrl(API_BASE_URL)
