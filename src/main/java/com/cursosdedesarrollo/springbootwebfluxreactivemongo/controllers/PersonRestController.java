@@ -82,19 +82,5 @@ public class PersonRestController {
     }
 
 
-    private static final String API_MIME_TYPE = "application/json";
-    private static final String API_BASE_URL = "http://localhost:8080";
-    private static final String USER_AGENT = "Spring 5 WebClient";
-    @GetMapping("/client")
-    public Flux<Person> clienteListado(){
-        WebClient webClient = WebClient.builder()
-                .baseUrl(API_BASE_URL)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, API_MIME_TYPE)
-                .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
-                .build();
-        return webClient.get()
-                .uri("/api/persons")
-                .exchange()
-                .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Person.class));
-    }
+
 }
