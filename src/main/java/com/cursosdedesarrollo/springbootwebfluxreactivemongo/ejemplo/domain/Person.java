@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain;
+package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

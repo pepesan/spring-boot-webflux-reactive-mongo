@@ -1,6 +1,6 @@
 package com.cursosdedesarrollo.springbootwebfluxreactivemongo;
 
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.controllers.TemperatureController;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.controllers.TemperatureController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

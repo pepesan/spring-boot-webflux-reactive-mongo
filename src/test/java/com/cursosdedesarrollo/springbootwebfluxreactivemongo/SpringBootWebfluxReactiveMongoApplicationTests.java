@@ -1,7 +1,7 @@
 package com.cursosdedesarrollo.springbootwebfluxreactivemongo;
 
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain.Person;
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.repositories.PersonRepository;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain.Person;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.repositories.PersonRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;

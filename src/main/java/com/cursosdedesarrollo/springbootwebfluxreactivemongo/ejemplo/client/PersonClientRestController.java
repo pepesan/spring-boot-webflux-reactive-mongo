@@ -1,6 +1,6 @@
-package com.cursosdedesarrollo.springbootwebfluxreactivemongo.client;
+package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.client;
 
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain.Person;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain.Person;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

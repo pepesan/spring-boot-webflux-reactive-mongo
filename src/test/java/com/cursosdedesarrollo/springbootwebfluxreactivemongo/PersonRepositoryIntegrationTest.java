@@ -1,17 +1,11 @@
 package com.cursosdedesarrollo.springbootwebfluxreactivemongo;
 
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain.Person;
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.repositories.PersonRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.repositories.PersonRepository;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.core.publisher.Mono;
 
 // TODO: corregir test de integración
 @RunWith(SpringRunner.class)

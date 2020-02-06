@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootwebfluxreactivemongo.websocket;
+package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.websocket;
 
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.TextMessage;

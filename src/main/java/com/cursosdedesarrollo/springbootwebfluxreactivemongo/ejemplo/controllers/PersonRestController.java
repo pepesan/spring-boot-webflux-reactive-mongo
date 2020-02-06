@@ -1,17 +1,14 @@
-package com.cursosdedesarrollo.springbootwebfluxreactivemongo.controllers;
+package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.controllers;
 
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.domain.Person;
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.repositories.PersonRepository;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain.Person;
+import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/persons")
@@ -70,7 +67,9 @@ public class PersonRestController {
         return personRepository.findById(id)
                 .flatMap(person ->
                         personRepository.delete(person)
-                                .then(Mono.just(new ResponseEntity<Person>(person, HttpStatus.OK)))
+                                .then(
+                                        Mono.just(
+                                                new ResponseEntity<Person>(person, HttpStatus.OK)))
                 )
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootwebfluxreactivemongo.websocket;
+package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.websocket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

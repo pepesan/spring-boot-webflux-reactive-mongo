@@ -1,4 +1,4 @@
-package com.cursosdedesarrollo.springbootwebfluxreactivemongo.controllers;
+package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
