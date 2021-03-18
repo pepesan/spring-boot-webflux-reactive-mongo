@@ -3,6 +3,8 @@ package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.controller
 import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain.Person;
 import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.repositories.ReactivePersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -62,7 +64,13 @@ public class PersonRestOtherController {
                 )
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
+    @GetMapping("/byName/{name}")
+    private Mono<Flux<Person>> getAllPersons(
+            @PathVariable(value = "name") String name,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        return Mono.just(reactiveMongoRepository.findByNameOrderByLastName(name, PageRequest.of(page,size)));
+    }
     // Se mandan las personas desde eventos mandados desde el servidor (Server Sent Events -SSE)
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Person> streamAllPersons() {
