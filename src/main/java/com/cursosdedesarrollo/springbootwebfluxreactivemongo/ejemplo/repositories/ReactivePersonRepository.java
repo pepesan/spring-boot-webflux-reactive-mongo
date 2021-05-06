@@ -8,10 +8,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 @Repository
 public interface ReactivePersonRepository extends ReactiveMongoRepository<Person, String> {
     @Query("{'name': ?0}")
     Person findByName(final String name);
-    // reultados
-    Flux<Person> findByNameOrderByLastName(String name, Pageable pageable);
+    // resultados
+    Flux<List<Person>> findByNameOrderByLastName(String name, Pageable pageable);
 }

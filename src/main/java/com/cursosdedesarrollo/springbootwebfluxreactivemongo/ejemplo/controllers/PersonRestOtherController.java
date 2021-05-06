@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/persons")
@@ -47,6 +48,7 @@ public class PersonRestOtherController {
         return reactiveMongoRepository.findById(id)
                 .flatMap(existingPerson -> {
                     existingPerson.setName(person.getName());
+                    existingPerson.setLastName(person.getLastName());
                     return reactiveMongoRepository.save(existingPerson);
                 })
                 .map(updatedPerson -> new ResponseEntity<>(updatedPerson, HttpStatus.OK))
@@ -65,11 +67,12 @@ public class PersonRestOtherController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @GetMapping("/byName/{name}")
-    private Mono<Flux<Person>> getAllPersons(
+    private Flux<List
+            <Person>> getAllPersons(
             @PathVariable(value = "name") String name,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        return Mono.just(reactiveMongoRepository.findByNameOrderByLastName(name, PageRequest.of(page,size)));
+        return reactiveMongoRepository.findByNameOrderByLastName(name, PageRequest.of(page,size));
     }
     // Se mandan las personas desde eventos mandados desde el servidor (Server Sent Events -SSE)
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
