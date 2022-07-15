@@ -17,20 +17,9 @@ public class PersonClientRestController {
     private static final String API_MIME_TYPE = "application/json";
     private static final String API_BASE_URL = "http://localhost:8080";
     private static final String USER_AGENT = "Spring 5 WebClient";
-    @GetMapping
-    public Flux<Person> clienteListado(){
-        WebClient webClient = WebClient.builder()
-                .baseUrl(API_BASE_URL)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, API_MIME_TYPE)
-                .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
-                .build();
-        return webClient.get()
-                .uri("/api/persons")
-                .exchange()
-                .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Person.class));
-    }
+
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Person>> clienteBorrado(@PathVariable(value = "id") String id){
+    public Mono<ResponseEntity<Person>> obtenClienteRemoto(@PathVariable(value = "id") String id){
         WebClient webClient = WebClient.builder()
                 .baseUrl(API_BASE_URL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, API_MIME_TYPE)
@@ -41,5 +30,19 @@ public class PersonClientRestController {
                 .exchange()
                 .flatMap(response -> response.toEntity(Person.class));
     }
+    @GetMapping
+    public Flux<Person> clienteListado(){
+        WebClient webClient = WebClient.builder()
+                .baseUrl(API_BASE_URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, API_MIME_TYPE)
+                .defaultHeader(HttpHeaders.USER_AGENT, USER_AGENT)
+                .build();
+        // pendiente de depurar
+        return webClient.get()
+                .uri("/api/persons")
+                .exchange()
+                .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Person.class));
+    }
+
 
 }
