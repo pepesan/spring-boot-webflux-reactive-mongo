@@ -23,6 +23,7 @@ public class PersonRestOtherController {
     private ReactivePersonRepository reactiveMongoRepository;
 
     @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
     public Flux<Person> getAllTweets() {
         return reactiveMongoRepository.findAll();
     }
