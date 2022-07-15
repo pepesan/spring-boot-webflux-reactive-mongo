@@ -13,26 +13,36 @@ import reactor.core.publisher.Mono;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/persons")
 public class PersonRestController {
 
 
     @Autowired
     private PersonRepository personRepository;
 
-    @GetMapping
+    // Manera reactiva de manejar la petición HTTP
+    @GetMapping("/api/persons")
     private Mono<Page<Person>> getAllPersons(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return Mono.just(personRepository.findAll(PageRequest.of(page,size)));
-    //private Flux<ResponseEntity<Person>> getAllPersons() {
+    }
     /*
+    @GetMapping("/api/personsresponseentity")
+    private Flux<ResponseEntity<Person>> getAllPersons() {
+
         return personRepository.findAll()
                 .map(ResponseEntity::ok)
                 //.map(persons -> ResponseEntity.ok(persons))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
 
+    }
      */
+
+    // Manera no reactiva de manejar la petición HTTP
+    @GetMapping("/api/personssync")
+    private Page<Person> getAllPersonsPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                           @RequestParam(name = "size", defaultValue = "10") Integer size){
+        return this.personRepository.findAll(PageRequest.of(page,size));
     }
 
 }

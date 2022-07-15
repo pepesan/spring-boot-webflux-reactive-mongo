@@ -22,23 +22,28 @@ public class PersonRestOtherController {
     @Autowired
     private ReactivePersonRepository reactiveMongoRepository;
 
-
+    @GetMapping("/list")
+    public Flux<Person> getAllTweets() {
+        return reactiveMongoRepository.findAll();
+    }
+    // método reactivo para el manejo de peticiones y la consulta a la BBDD
     @PostMapping
     private Mono<ResponseEntity<Person>> addPerson(@Valid @RequestBody Person person) {
         return reactiveMongoRepository.save(person)
-                .map(ResponseEntity::ok)
+                .map(data -> ResponseEntity.ok(data))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
     @GetMapping("/{id}")
+    /*
     public Mono<Person> getPersonById(@PathVariable(value = "id") String id) {
         return reactiveMongoRepository.findById(id);
-        /*
-    public Mono<ResponseEntity<Person>> getPersonById(@PathVariable(value = "id") String id) {
-        return personRepository.findById(id)
-                .map(person -> ResponseEntity.ok(person))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
 
-        */
+
+     */
+    public Mono<ResponseEntity<Person>> getPersonById(@PathVariable(value = "id") String id) {
+        return reactiveMongoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
 
@@ -67,8 +72,15 @@ public class PersonRestOtherController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @GetMapping("/byName/{name}")
-    private Flux<List
-            <Person>> getAllPersons(
+    private Flux<List<Person>> getAllPersons(
+            @PathVariable(value = "name") String name,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        return reactiveMongoRepository.findByNameOrderByLastName(name, PageRequest.of(page,size));
+    }
+    @GetMapping("/byNameResponseEntity/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    private Flux<List<Person>> getAllPersonsResponseEntity(
             @PathVariable(value = "name") String name,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size) {
