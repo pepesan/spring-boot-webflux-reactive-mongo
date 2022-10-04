@@ -3,10 +3,10 @@ package com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor

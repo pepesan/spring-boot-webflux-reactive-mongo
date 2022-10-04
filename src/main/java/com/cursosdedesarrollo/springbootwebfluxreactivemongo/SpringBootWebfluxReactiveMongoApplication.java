@@ -1,6 +1,7 @@
 package com.cursosdedesarrollo.springbootwebfluxreactivemongo;
 
 import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.controllers.TemperatureController;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,7 +11,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
 
+@Slf4j
 @SpringBootApplication
 public class SpringBootWebfluxReactiveMongoApplication {
 

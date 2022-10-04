@@ -1,8 +1,6 @@
 package com.cursosdedesarrollo.springbootwebfluxreactivemongo;
 
 import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.domain.Person;
-import com.cursosdedesarrollo.springbootwebfluxreactivemongo.ejemplo.repositories.PersonRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-
-import java.util.Collections;
 
 
 @RunWith(SpringRunner.class)

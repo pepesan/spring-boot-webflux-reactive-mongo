@@ -27,8 +27,7 @@ public class PersonClientRestController {
                 .build();
         return webClient.get()
                 .uri("/api/persons/"+id)
-                .exchange()
-                .flatMap(response -> response.toEntity(Person.class));
+                .exchangeToMono(response -> response.toEntity(Person.class));
     }
     @GetMapping
     public Flux<Person> clienteListado(){
@@ -40,8 +39,10 @@ public class PersonClientRestController {
         // pendiente de depurar
         return webClient.get()
                 .uri("/api/persons")
-                .exchange()
-                .flatMapMany(clientResponse -> clientResponse.bodyToFlux(Person.class));
+                .exchangeToFlux(clientResponse -> {
+                    System.out.println(clientResponse);
+                    return clientResponse.bodyToFlux(Person.class);
+                });
     }
 
 
