@@ -37,16 +37,14 @@ public class PersonClientRestController {
     }
     // Alta Objeto
     @PostMapping
-    public Flux<Person> clienteAlta(@RequestBody Person person){
+    public Mono<ResponseEntity<Person>> clienteAlta(@RequestBody Person person){
 
         // pendiente de depurar
         return this.webClient.post()
                 .uri("/api/persons")
                 .body(Mono.just(person), Person.class)
-                .exchangeToFlux(clientResponse -> {
-                    System.out.println(clientResponse);
-                    return clientResponse.bodyToFlux(Person.class);
-                }).timeout(Duration.ofSeconds(5));
+                .exchangeToMono(response -> response.toEntity(Person.class))
+                .timeout(Duration.ofSeconds(5));
     }
     // Obtener Objeto por ID
     @GetMapping("/{id}")
@@ -54,7 +52,14 @@ public class PersonClientRestController {
 
         return this.webClient.get()
                 .uri("/api/persons/"+id)
-                .exchangeToMono(response -> response.toEntity(Person.class));
+                .exchangeToMono(response -> {
+                    Mono<ResponseEntity<Person>> person = response.toEntity(Person.class);
+                    person.doOnNext(data -> {
+                        // procesado asíncrono de datos
+                        System.out.println(data);
+                    });
+                    return person ;
+                });
     }
     // Modificar Objeto por ID
     @PutMapping("/{id}")
