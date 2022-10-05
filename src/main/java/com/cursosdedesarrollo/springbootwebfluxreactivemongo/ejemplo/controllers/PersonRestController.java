@@ -87,7 +87,10 @@ public class PersonRestController {
             return reactiveMongoRepository.findByNameOrderByLastName(name, PageRequest.of(page,size));
     }
     // Se mandan las personas desde eventos mandados desde el servidor (Server Sent Events -SSE)
-    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(
+            value = "/stream",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE
+    )
     public Flux<Person> streamAllPersons() {
         return reactiveMongoRepository.findAll();
     }

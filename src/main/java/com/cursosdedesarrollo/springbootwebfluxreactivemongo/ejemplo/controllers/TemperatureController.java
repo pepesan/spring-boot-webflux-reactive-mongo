@@ -12,7 +12,9 @@ import reactor.core.publisher.Flux;
 @RestController
 public class TemperatureController {
     Logger logger = LoggerFactory.getLogger(TemperatureController.class);
-    @GetMapping(value = "/temperatures", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(
+            value = "/temperatures",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Integer> getTemperature() {
         Random r = new Random();
         int low = 0;
